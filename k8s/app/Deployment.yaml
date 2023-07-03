@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-msg-app
+  name: hello-wsl-app
   namespace: app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello-msg-app
+      app: hello-wsl-app
   template:
     metadata:
       labels:
-        app: hello-msg-app
+        app: hello-wsl-app
     spec:
       containers:
-        - name: hello-msg
-          image: localhost:5000/hello-msg:latest
+        - name: hello-wsl
+          image: localhost:5000/hello-wsl:latest
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 49999
@@ -23,11 +23,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-msg-internal-service
+  name: hello-wsl-internal-service
   namespace: app
 spec:
   selector:
-    app: hello-msg-app
+    app: hello-wsl-app
   ports:
     - protocol: TCP
       port: 49999
@@ -36,7 +36,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hello-msg-ingress
+  name: hello-wsl-ingress
   namespace: app
 spec:
   ingressClassName: nginx
@@ -48,6 +48,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: hello-msg-internal-service
+                name: hello-wsl-internal-service
                 port:
                   number: 49999
