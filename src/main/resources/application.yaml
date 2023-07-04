@@ -10,3 +10,8 @@ management:
     metrics:
       export:
         enabled: true
+
+wsl:
+  docker:
+    filePath: C:/Temp/Logs
+    fileName: Custom_Logs.log
