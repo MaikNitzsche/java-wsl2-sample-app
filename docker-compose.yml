@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  hello-wsl:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    ports:
+      - "49999:8080"
+    volumes:
+      - type: bind
+        read_only: false
+        source: /mnt/c/Temp/Docker/hello-wsl
+        target: /opt/hello-wsl
+    networks:
+      - hello-wsl
+networks:
+  hello-wsl:
+    name: hello-wsl
+    driver: bridge
