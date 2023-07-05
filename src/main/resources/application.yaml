@@ -1,5 +1,6 @@
+### DEFAULT ###
 server:
-  port: 49999
+  port: 8080
 
 management:
   endpoints:
@@ -10,6 +11,16 @@ management:
     metrics:
       export:
         enabled: true
+
+wsl:
+  docker:
+    filePath: /opt/hello-wsl
+    fileName: Custom_Logs.log
+---
+### LOCAL ###
+spring.config.activate.on-profile: LOCAL
+server:
+  port: 49999
 
 wsl:
   docker:
