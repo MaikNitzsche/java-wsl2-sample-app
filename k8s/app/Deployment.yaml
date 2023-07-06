@@ -15,10 +15,45 @@ spec:
     spec:
       containers:
         - name: hello-wsl
-          image: localhost:5000/hello-wsl:latest
+          image: localhost:5000/hello-wsl:1.0
           imagePullPolicy: "IfNotPresent"
           ports:
-            - containerPort: 49999
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /opt/hello-wsl
+              name: hello-wsl-pv-storage
+      volumes:
+        - name: hello-wsl-pv-storage
+          persistentVolumeClaim:
+            claimName: hello-wsl-pv-claim
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hello-wsl-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/c/temp/k8s/hello-wsl"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hello-wsl-pv-claim
+  namespace: app
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
 ---
 apiVersion: v1
 kind: Service
@@ -31,23 +66,4 @@ spec:
   ports:
     - protocol: TCP
       port: 49999
-      targetPort: 49999
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: hello-wsl-ingress
-  namespace: app
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: app.k8s.local
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: hello-wsl-internal-service
-                port:
-                  number: 49999
+      targetPort: 8080
