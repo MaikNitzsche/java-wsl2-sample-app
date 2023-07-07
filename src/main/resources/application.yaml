@@ -20,7 +20,7 @@ wsl:
 ### LOCAL ###
 spring.config.activate.on-profile: LOCAL
 server:
-  port: 49999
+  port: 49997
 
 wsl:
   docker:
