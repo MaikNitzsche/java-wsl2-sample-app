@@ -4,3 +4,10 @@ metadata:
   labels:
     kubernetes.io/metadata.name: app
   name: app
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: monitoring
+  name: monitoring

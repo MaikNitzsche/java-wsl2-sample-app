@@ -88,3 +88,24 @@ spec:
                 name: hello-wsl-internal-service
                 port:
                   number: 49999
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: monitoring-ingress
+  namespace: monitoring
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: wsl2host
+      http:
+        paths:
+          - path: /monitoring(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: kube-state-metrics-1689237598
+                port:
+                  number: 8080

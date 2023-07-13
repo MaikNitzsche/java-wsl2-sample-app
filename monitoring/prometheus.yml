@@ -5,9 +5,23 @@ scrape_configs:
   - job_name: 'prometheus'
     scrape_interval: 1m
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: ['wsl2host:9090']
 
   - job_name: 'node'
     scrape_interval: 5s
     static_configs:
-      - targets: ['node-exporter:9100']
+      - targets: ['wsl2host:9100']
+
+  - job_name: 'hello-wsl'
+    scrape_interval: 5s
+    scheme: http
+    metrics_path: /hello-wsl/actuator/prometheus
+    static_configs:
+      - targets: [ 'wsl2host' ]
+
+  - job_name: 'k8s'
+    scrape_interval: 5s
+    scheme: http
+    metrics_path: /monitoring/metrics
+    static_configs:
+      - targets: [ 'wsl2host' ]
